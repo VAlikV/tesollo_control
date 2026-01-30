@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(PROJECT DG_TEST_SDK)
+set(PROJECT DG_CONTROL)
 
 project(${PROJECT} VERSION 1.0.0 LANGUAGES CXX)
 

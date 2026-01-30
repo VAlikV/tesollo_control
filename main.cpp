@@ -7,7 +7,6 @@
 using namespace handcontrol;
 using namespace server;
 
-DGControl* dg = DGControl::getInstance();
 bool mainprog = true;
 
 void signalHandler(int)
@@ -17,6 +16,8 @@ void signalHandler(int)
 
 int main()
 {   
+    DGControl* dg = DGControl::getInstance();
+
     UDPServer<20,20> udp_server("192.168.68.201", 8081, "192.168.68.169", 8082);
     std::signal(SIGINT, signalHandler);
 
