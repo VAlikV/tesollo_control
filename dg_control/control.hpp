@@ -60,6 +60,10 @@ private:
         0,0,0,0
     };
 
+    float _currentCur[MAX_JOINT_COUNT] = {0};
+    float _currentVel[MAX_JOINT_COUNT] = {0};
+    float _currentTemp[MAX_JOINT_COUNT] = {0};
+
     float _tempPos[MAX_JOINT_COUNT] = {
         0,0,0,0,
         0,0,0,0,
@@ -81,12 +85,21 @@ private:
 
     // ----------------- Queues
     ring_buffer<Eigen::Array<double,MAX_JOINT_COUNT,1>> _target_joint_buffer;
+
     ring_buffer<Eigen::Array<double,MAX_JOINT_COUNT,1>> _current_joint_buffer;
+    ring_buffer<Eigen::Array<double,MAX_JOINT_COUNT,1>> _current_current_buffer;
+    ring_buffer<Eigen::Array<double,MAX_JOINT_COUNT,1>> _current_velocity_buffer;
+    ring_buffer<Eigen::Array<double,MAX_JOINT_COUNT,1>> _current_temperature_buffer;
+
 
     std::jthread _control;
 
     Eigen::Array<double,MAX_JOINT_COUNT,1> _msgTargetPos;
+
     Eigen::Array<double,MAX_JOINT_COUNT,1> _msgCurrentPos;
+    Eigen::Array<double,MAX_JOINT_COUNT,1> _msgCurrentCur;
+    Eigen::Array<double,MAX_JOINT_COUNT,1> _msgCurrentVel;
+    Eigen::Array<double,MAX_JOINT_COUNT,1> _msgCurrentTemp;
 
     // ----------------- Callbacks
     static void _ConnectedCallback();
@@ -116,6 +129,9 @@ public:
 
     bool setTragetPosition(const Eigen::Array<double,MAX_JOINT_COUNT,1> &t_position);
     bool getCurrentPosition(Eigen::Array<double,MAX_JOINT_COUNT,1> &c_position);
+    bool getCurrentCurrent(Eigen::Array<double,MAX_JOINT_COUNT,1> &c_current);
+    bool getCurrentVelocity(Eigen::Array<double,MAX_JOINT_COUNT,1> &c_velocity);
+    bool getCurrentTemperature(Eigen::Array<double,MAX_JOINT_COUNT,1> &c_temperature);
 
 };
 

@@ -18,10 +18,18 @@ int main()
     std::signal(SIGINT, signalHandler);
 
     Eigen::Array<double,MAX_JOINT_COUNT,1> pos;
+    Eigen::Array<double,MAX_JOINT_COUNT,1> cur;
+    Eigen::Array<double,MAX_JOINT_COUNT,1> vel;
+    Eigen::Array<double,MAX_JOINT_COUNT,1> temp;
+
     Eigen::Array<double,MAX_JOINT_COUNT,1> target_pos1;
     Eigen::Array<double,MAX_JOINT_COUNT,1> target_pos2;
 
     pos << 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0;
+    cur << 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0;
+    vel << 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0;
+    temp << 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0;
+
     target_pos1 << 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0;
     target_pos2 << 0,0,50,50,
                 0,50,80,80,
@@ -51,7 +59,11 @@ int main()
         }
 
         dg->getCurrentPosition(pos);
-        
+
+        dg->getCurrentCurrent(cur);
+        dg->getCurrentVelocity(vel);
+        dg->getCurrentTemperature(temp);
+
         // std::cout << t << "\n";
 
         std::this_thread::sleep_for(std::chrono::microseconds(100));

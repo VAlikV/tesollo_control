@@ -6,7 +6,10 @@ DGControl *DGControl::_instancePtr = nullptr;
 
 DGControl::DGControl(const char* ip, int port, int slaveID):
 _target_joint_buffer(1024),
-_current_joint_buffer(1024)
+_current_joint_buffer(1024),
+_current_current_buffer(1024),
+_current_velocity_buffer(1024),
+_current_temperature_buffer(1024)
 {
     this->_port = port;
     this->_slaveID = slaveID;
@@ -180,9 +183,19 @@ void DGControl::_loop()
     while(_g_connected.load())
     {
         std::memcpy(_currentPos, _g_gripperData.joint, sizeof(_g_gripperData.joint));   // Запись информации с гриппера
+        std::memcpy(_currentCur, _g_gripperData.current, sizeof(_g_gripperData.current));   // Запись информации с гриппера
+        std::memcpy(_currentVel, _g_gripperData.velocity, sizeof(_g_gripperData.velocity));   // Запись информации с гриппера
+        std::memcpy(_currentTemp, _g_gripperData.temperature, sizeof(_g_gripperData.temperature));   // Запись информации с гриппера
 
         array2EigenArray(_currentPos, _msgCurrentPos);
+        array2EigenArray(_currentCur, _msgCurrentCur);
+        array2EigenArray(_currentVel, _msgCurrentVel);
+        array2EigenArray(_currentTemp, _msgCurrentTemp);
+
         _current_joint_buffer.push(_msgCurrentPos);
+        _current_current_buffer.push(_msgCurrentCur);
+        _current_velocity_buffer.push(_msgCurrentVel);
+        _current_temperature_buffer.push(_msgCurrentTemp);
 
         if (_target_joint_buffer.pop(_msgTargetPos))
         {
@@ -216,6 +229,21 @@ bool DGControl::setTragetPosition(const Eigen::Array<double,MAX_JOINT_COUNT,1> &
 bool DGControl::getCurrentPosition(Eigen::Array<double,MAX_JOINT_COUNT,1> &position)
 {
     return _current_joint_buffer.pop(position);
+}
+
+bool DGControl::getCurrentCurrent(Eigen::Array<double,MAX_JOINT_COUNT,1> &current)
+{
+    return _current_current_buffer.pop(current);
+}
+
+bool DGControl::getCurrentVelocity(Eigen::Array<double,MAX_JOINT_COUNT,1> &velocity)
+{
+    return _current_velocity_buffer.pop(velocity);
+}
+
+bool DGControl::getCurrentTemperature(Eigen::Array<double,MAX_JOINT_COUNT,1> &temperature)
+{
+    return _current_temperature_buffer.pop(temperature);
 }
 
 // --------------------------------------------------------------------------------
