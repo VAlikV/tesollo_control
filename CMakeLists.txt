@@ -17,12 +17,14 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 set(CONTROL ${CMAKE_CURRENT_SOURCE_DIR}/dg_control)
 set(LOCKFREE ${CMAKE_CURRENT_SOURCE_DIR}/lockfree)
+set(UDP ${CMAKE_CURRENT_SOURCE_DIR}/udp)
 
 add_executable(${PROJECT}
     # developer.cpp
     main.cpp
     ${CONTROL}/control.cpp      ${CONTROL}/control.hpp
     ${LOCKFREE}/lockfree.hpp
+    ${UDP}/udp_server.cpp       ${UDP}/udp_server.hpp       ${UDP}/json.hpp 
 )
 
 target_link_libraries(${PROJECT}

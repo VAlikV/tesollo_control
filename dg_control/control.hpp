@@ -80,7 +80,7 @@ private:
         0,0,0,0
     };
 
-    float _deltaPos = 0.05;
+    float _deltaPos = 0.1;
     float _jointThreshold = 0.1;
 
     // ----------------- Queues

@@ -2,8 +2,10 @@
 #include <csignal>
 #include "dg_control/control.hpp"
 #include <chrono>
+#include "udp/udp_server.hpp"
 
 using namespace handcontrol;
+using namespace server;
 
 DGControl* dg = DGControl::getInstance();
 bool mainprog = true;
@@ -15,6 +17,7 @@ void signalHandler(int)
 
 int main()
 {   
+    UDPServer<20,20> udp_server("192.168.68.201", 8081, "192.168.68.169", 8082);
     std::signal(SIGINT, signalHandler);
 
     Eigen::Array<double,MAX_JOINT_COUNT,1> pos;
@@ -33,33 +36,39 @@ int main()
     target_pos1 << 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0;
     target_pos2 << 0,0,50,50,
                 0,50,80,80,
-                0,0,0,0,
+                0,50,80,80,
                 0,50,80,80,
                 0,0,80,80;
     
     dg->start();
+    udp_server.start();
 
     int t = 0;
 
     while(mainprog)
     {   
-        ++t;
+        // ++t;
 
-        if(t < 20000)
+        // if(t < 20000)
+        // {
+        //     dg->setTragetPosition(target_pos1);
+        // }
+        // else if(t < 40000)
+        // {
+        //     dg->setTragetPosition(target_pos2);
+        // }
+        // else
+        // {
+        //     t=0;
+        // }
+
+        if(udp_server.getMsg(target_pos1))
         {
             dg->setTragetPosition(target_pos1);
         }
-        else if(t < 40000)
-        {
-            dg->setTragetPosition(target_pos2);
-        }
-        else
-        {
-            t=0;
-        }
+
 
         dg->getCurrentPosition(pos);
-
         dg->getCurrentCurrent(cur);
         dg->getCurrentVelocity(vel);
         dg->getCurrentTemperature(temp);
