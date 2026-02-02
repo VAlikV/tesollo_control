@@ -213,9 +213,15 @@ void DGControl::_loop()
 
 void DGControl::_updatePos()
 {
+    float prev_pos;
     for (int8_t i = 0; i < MAX_JOINT_COUNT; ++i)
-    {
+    {   
+        prev_pos = _tempPos[i];
         _tempPos[i] = _tempPos[i] + _deltaPos * handcontrol::sign((_targetPos[i]-_tempPos[i]), _jointThreshold); 
+        if(!((_tempPos[i] >= _lowerLimits[i]) && (_tempPos[i] <= _upperLimits[i])))
+        {
+            _tempPos[i] = prev_pos;
+        }
     }
 }
 

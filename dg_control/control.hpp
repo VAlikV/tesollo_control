@@ -52,26 +52,25 @@ private:
 	float _D[MAX_JOINT_COUNT] = {2.0};
 
     // ----------------- Kinematics
-    float _currentPos[MAX_JOINT_COUNT] = {
-        0,0,0,0,
-        0,0,0,0,
-        0,0,0,0,
-        0,0,0,0,
-        0,0,0,0
-    };
-
+    float _currentPos[MAX_JOINT_COUNT] = {0};
     float _currentCur[MAX_JOINT_COUNT] = {0};
     float _currentVel[MAX_JOINT_COUNT] = {0};
     float _currentTemp[MAX_JOINT_COUNT] = {0};
 
-    float _tempPos[MAX_JOINT_COUNT] = {
-        0,0,0,0,
-        0,0,0,0,
-        0,0,0,0,
-        0,0,0,0,
-        0,0,0,0
-    };
+    const float _upperLimits[MAX_JOINT_COUNT] = {51, 0, 90, 90, 
+                                                35, 115, 90, 90, 
+                                                35, 112, 90, 90, 
+                                                24, 109, 90, 90, 
+                                                60, 35, 90, 90};
 
+    const float _lowerLimits[MAX_JOINT_COUNT] = {-22, -180, -90, -90, 
+                                                -24, 0, -90, -90, 
+                                                -35, 0, -90, -90, 
+                                                -35, 0, -90, -90, 
+                                                -1, -24, -90, -90};
+
+
+    float _tempPos[MAX_JOINT_COUNT] = {0};
     float _targetPos[MAX_JOINT_COUNT] = {
         0,0,0,0,
         0,0,0,0,
