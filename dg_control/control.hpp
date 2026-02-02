@@ -132,6 +132,12 @@ public:
     bool getCurrentVelocity(Eigen::Array<double,MAX_JOINT_COUNT,1> &c_velocity);
     bool getCurrentTemperature(Eigen::Array<double,MAX_JOINT_COUNT,1> &c_temperature);
 
+    bool setTragetPosition(const float* t_position);
+    bool getCurrentPosition(float* c_position);
+    bool getCurrentCurrent(float* c_current);
+    bool getCurrentVelocity(float* c_velocity);
+    bool getCurrentTemperature(float* c_temperature);
+
 };
 
 void eigenArray2Array(const Eigen::Array<double,MAX_JOINT_COUNT,1> &eigen_array, float* array);

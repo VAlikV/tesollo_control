@@ -252,6 +252,88 @@ bool DGControl::getCurrentTemperature(Eigen::Array<double,MAX_JOINT_COUNT,1> &te
     return _current_temperature_buffer.pop(temperature);
 }
 
+// -----------------------
+
+bool DGControl::setTragetPosition(const float* position)
+{
+    Eigen::Array<double,MAX_JOINT_COUNT,1> array;
+
+    for(int8_t i = 0; i < MAX_JOINT_COUNT; ++i)
+    {
+        array(i) = position[i];
+    }
+    
+    return _target_joint_buffer.push(array);
+}
+
+bool DGControl::getCurrentPosition(float* position)
+{
+    Eigen::Array<double,MAX_JOINT_COUNT,1> array;
+    if (_current_joint_buffer.pop(array))
+    {
+        for(int8_t i = 0; i < MAX_JOINT_COUNT; ++i)
+        {
+            position[i] = array[i];
+        }
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool DGControl::getCurrentCurrent(float* current)
+{
+    Eigen::Array<double,MAX_JOINT_COUNT,1> array;
+    if (_current_current_buffer.pop(array))
+    {
+        for(int8_t i = 0; i < MAX_JOINT_COUNT; ++i)
+        {
+            current[i] = array[i];
+        }
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool DGControl::getCurrentVelocity(float* velocity)
+{
+    Eigen::Array<double,MAX_JOINT_COUNT,1> array;
+    if (_current_velocity_buffer.pop(array))
+    {
+        for(int8_t i = 0; i < MAX_JOINT_COUNT; ++i)
+        {
+            velocity[i] = array[i];
+        }
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool DGControl::getCurrentTemperature(float* temperature)
+{
+    Eigen::Array<double,MAX_JOINT_COUNT,1> array;
+    if (_current_temperature_buffer.pop(array))
+    {
+        for(int8_t i = 0; i < MAX_JOINT_COUNT; ++i)
+        {
+            temperature[i] = array[i];
+        }
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 // --------------------------------------------------------------------------------
 
 void handcontrol::eigenArray2Array(const Eigen::Array<double,MAX_JOINT_COUNT,1> &eigen_array, float* array)

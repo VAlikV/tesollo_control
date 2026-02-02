@@ -36,10 +36,10 @@ int main()
 
     target_pos1 << 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0;
     target_pos2 << 0,0,50,50,
-                0,50,80,80,
-                0,50,80,80,
-                0,50,80,80,
-                0,0,80,80;
+                0,0,50,50,
+                0,0,50,50,
+                0,0,50,50,
+                0,0,50,50;
     
     dg->start();
     udp_server.start();
@@ -48,25 +48,25 @@ int main()
 
     while(mainprog)
     {   
-        // ++t;
+        ++t;
 
-        // if(t < 20000)
-        // {
-        //     dg->setTragetPosition(target_pos1);
-        // }
-        // else if(t < 40000)
-        // {
-        //     dg->setTragetPosition(target_pos2);
-        // }
-        // else
-        // {
-        //     t=0;
-        // }
-
-        if(udp_server.getMsg(target_pos1))
+        if(t < 20000)
         {
             dg->setTragetPosition(target_pos1);
         }
+        else if(t < 40000)
+        {
+            dg->setTragetPosition(target_pos2);
+        }
+        else
+        {
+            t=0;
+        }
+
+        // if(udp_server.getMsg(target_pos1))
+        // {
+        //     dg->setTragetPosition(target_pos1);
+        // }
 
 
         dg->getCurrentPosition(pos);
@@ -74,13 +74,14 @@ int main()
         dg->getCurrentVelocity(vel);
         dg->getCurrentTemperature(temp);
 
-        // std::cout << t << "\n";
+        std::cout << t << "\n";
 
         std::this_thread::sleep_for(std::chrono::microseconds(100));
 
     }
 
     dg->stop();
+    udp_server.stop();
 
     return 0;
 }
