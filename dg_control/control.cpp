@@ -197,14 +197,18 @@ void DGControl::_loop()
         _current_velocity_buffer.push(_msgCurrentVel);
         _current_temperature_buffer.push(_msgCurrentTemp);
 
-        if (_target_joint_buffer.pop(_msgTargetPos))
+        if (_checkTemp())
         {
-            eigenArray2Array(_msgTargetPos, _targetPos);
+            if (_target_joint_buffer.pop(_msgTargetPos))
+            {
+                eigenArray2Array(_msgTargetPos, _targetPos);
+            }
+
+            _updatePos();
+
+            MoveServoJoint(_tempPos); 
         }
-
-        _updatePos();
-
-        MoveServoJoint(_tempPos); 
+        
 
         next += std::chrono::microseconds(_g_commPeriod);
         std::this_thread::sleep_until(next);
@@ -223,6 +227,15 @@ void DGControl::_updatePos()
             _tempPos[i] = prev_pos;
         }
     }
+}
+
+bool DGControl::_checkTemp()
+{
+    for(int8_t i = 0; i < MAX_JOINT_COUNT; ++i)
+    {
+        if(_currentTemp[i] >= _tempLimit) return false;
+    }
+    return true;
 }
 
 // --------------------------------------------------------------------------------

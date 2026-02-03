@@ -68,13 +68,12 @@ int main()
         //     dg->setTragetPosition(target_pos1);
         // }
 
-
         dg->getCurrentPosition(pos);
         dg->getCurrentCurrent(cur);
         dg->getCurrentVelocity(vel);
         dg->getCurrentTemperature(temp);
 
-        std::cout << t << "\n";
+        std::cout << pos[2] << " " << pos[3] << "\n";
 
         std::this_thread::sleep_for(std::chrono::microseconds(100));
 
