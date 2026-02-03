@@ -222,7 +222,7 @@ void DGControl::_updatePos()
     {   
         prev_pos = _tempPos[i];
         _tempPos[i] = _tempPos[i] + _deltaPos * handcontrol::sign((_targetPos[i]-_tempPos[i]), _jointThreshold); 
-        if(!((_tempPos[i] >= _lowerLimits[i]) && (_tempPos[i] <= _upperLimits[i])))
+        if(!((_tempPos[i] >= _lowerLimits[i]-_deltaLimits) && (_tempPos[i] <= _upperLimits[i]+_deltaLimits)))
         {
             _tempPos[i] = prev_pos;
         }

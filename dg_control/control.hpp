@@ -57,17 +57,18 @@ private:
     float _currentVel[MAX_JOINT_COUNT] = {0};
     float _currentTemp[MAX_JOINT_COUNT] = {0};
 
-    const float _upperLimits[MAX_JOINT_COUNT] = {51, 3, 90, 90, 
+    const float _upperLimits[MAX_JOINT_COUNT] = {51, 0, 90, 90, 
                                                 35, 115, 90, 90, 
                                                 35, 112, 90, 90, 
                                                 24, 109, 90, 90, 
                                                 60, 35, 90, 90};
 
     const float _lowerLimits[MAX_JOINT_COUNT] = {-22, -180, -90, -90, 
-                                                -24, -3, -90, -90, 
-                                                -35, -3, -90, -90, 
-                                                -35, -3, -90, -90, 
-                                                -3, -24, -90, -90};
+                                                -24, -0, -90, -90, 
+                                                -35, -0, -90, -90, 
+                                                -35, -0, -90, -90, 
+                                                -0, -24, -90, -90};
+    const float _deltaLimits = 3.0;
 
     const float _tempLimit = 65.0;
 
