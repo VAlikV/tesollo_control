@@ -168,6 +168,7 @@ void DGControl::stop()
         if (_control.joinable()) _control.join();
         _g_commPeriod.store(0);
         SystemStop();
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         DisconnectToGripper();
 
         std::cout << "Disconnected\n"; 
