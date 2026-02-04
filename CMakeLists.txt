@@ -21,11 +21,13 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 set(CONTROL ${CMAKE_CURRENT_SOURCE_DIR}/dg_control)
 set(LOCKFREE ${CMAKE_CURRENT_SOURCE_DIR}/lockfree)
 set(UDP ${CMAKE_CURRENT_SOURCE_DIR}/udp)
+set(POSES ${CMAKE_CURRENT_SOURCE_DIR}/poses)
 
 add_library(${CORE}
     ${CONTROL}/control.cpp      ${CONTROL}/control.hpp
     ${LOCKFREE}/lockfree.hpp
     ${UDP}/udp_server.cpp       ${UDP}/udp_server.hpp       ${UDP}/json.hpp 
+    ${POSES}/poses.hpp
 )
 
 set_target_properties(${CORE} PROPERTIES
