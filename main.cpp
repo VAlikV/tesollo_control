@@ -75,33 +75,30 @@ int main()
                 dg->setTragetPosition(poses::numbers::ZERO);
                 break;
             case 6:
-                dg->setTragetPosition(poses::gestures::MIDDLE_FINGER);
-                break;
-            case 7:
                 dg->setTragetPosition(poses::gestures::PEACE);
                 break;
-            case 8:
+            case 7:
                 dg->setTragetPosition(poses::gestures::FIXERS);
                 break;
-            case 9:
+            case 8:
                 dg->setTragetPosition(poses::gestures::GOAT);
                 break;
-            case 10:
+            case 9:
                 dg->setTragetPosition(poses::gestures::OKEY);
                 break;
-            case 11:
+            case 10:
                 dg->setTragetPosition(poses::grasps::OPEN);
                 break;
-            case 12:
+            case 11:
                 dg->setTragetPosition(poses::grasps::FIVE_FINGER_TO_POINT);
                 break;
-            case 13:
+            case 12:
                 dg->setTragetPosition(poses::grasps::THREE_FINGER_TO_POINT);
                 break;
-            case 14:
+            case 13:
                 dg->setTragetPosition(poses::grasps::THUMB_TO_INDEX);
                 break;
-            case 15:
+            case 14:
                 dg->setTragetPosition(poses::grasps::THUMB_TO_MIDDLE);
                 break;
             default:
