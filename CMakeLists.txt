@@ -46,6 +46,7 @@ add_executable(${PROJECT}
 
 pybind11_add_module(${PYTHON_PACKAGE}
     python/wrapper.cpp
+    ${POSES}/poses.hpp
 )
 
 

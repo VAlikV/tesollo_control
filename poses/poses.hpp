@@ -10,6 +10,12 @@ namespace poses
                                             0, 0, 60, 40,
                                             10, 20, 45, 50};
 
+        constexpr float OPEN_BIG[MAX_JOINT_COUNT] = {0, -90, 20, 10,
+                                            -20, 0, 30, 20,
+                                            -10, 0, 30, 20,
+                                            0, 0, 30, 20,
+                                            10, 20, 20, 25};
+
         constexpr float FIVE_FINGER_TO_POINT[MAX_JOINT_COUNT] = {5, -95, 45, 30,
                                                             -15, 50, 50, 50,
                                                             -5, 30, 80, 30,
@@ -72,6 +78,24 @@ namespace poses
                                                 0, 0, 0, 0,
                                                 5, 0, 0, 0,
                                                 0, 15, 0, 0};
+
+        constexpr float FIST[MAX_JOINT_COUNT] = {0, 0, 40, 55,
+                                                0, 90, 80, 50,
+                                                0, 90, 80, 25,
+                                                0, 90, 80, 0,
+                                                0, 0, 90, 90};    
+                                                
+        constexpr float INDEX[MAX_JOINT_COUNT] = {0, 0, 40, 55,
+                                                0, 65, 0, 0,
+                                                0, 90, 80, 25,
+                                                0, 90, 80, 0,
+                                                0, 0, 90, 90};
+
+        constexpr float HOOK[MAX_JOINT_COUNT] = {0, 0, 40, 55,
+                                                0, 25, 55, 60,
+                                                0, 25, 55, 40,
+                                                0, 25, 55, 40,
+                                                0, 0, 30, 60};
     }
 
     namespace numbers
@@ -112,4 +136,13 @@ namespace poses
                                                 5, 0, 0, 0,
                                                 0, 15, 0, 0};
     }
+
+    // namespace manipulations
+    // {
+    //     constexpr float PUSH[MAX_JOINT_COUNT] = {-5, -5, 60, 60,
+    //                                             -10, 75, 85, 85,
+    //                                             0, 75, 85, 85,
+    //                                             5, 65, 85, 85,
+    //                                             0, 15, 85, 85};
+    // }
 }

@@ -3,10 +3,18 @@
 #include <pybind11/numpy.h>
 
 #include "../dg_control/control.hpp"
+#include "../poses/poses.hpp"
 
 using namespace handcontrol;
 
 namespace py = pybind11;
+
+py::array_t<float> to_numpy_copy(const float* data, size_t size)
+{
+    py::array_t<float> arr(size);
+    std::memcpy(arr.mutable_data(), data, size * sizeof(float));
+    return arr;
+}
 
 PYBIND11_MODULE(dg5f_python, m)
 {
@@ -89,4 +97,75 @@ PYBIND11_MODULE(dg5f_python, m)
             }
         );
 
+    auto poses = m.def_submodule("poses");
+
+    auto grasps = poses.def_submodule("grasps");
+    auto gestures = poses.def_submodule("gestures");
+    auto numbers = poses.def_submodule("numbers");
+
+    // ===== GRASPS =====
+    grasps.attr("OPEN") =
+        to_numpy_copy(poses::grasps::OPEN, MAX_JOINT_COUNT);
+
+    grasps.attr("OPEN_BIG") =
+        to_numpy_copy(poses::grasps::OPEN_BIG, MAX_JOINT_COUNT);
+
+    grasps.attr("FIVE_FINGER_TO_POINT") =
+        to_numpy_copy(poses::grasps::FIVE_FINGER_TO_POINT, MAX_JOINT_COUNT);
+
+    grasps.attr("THREE_FINGER_TO_POINT") =
+        to_numpy_copy(poses::grasps::THREE_FINGER_TO_POINT, MAX_JOINT_COUNT);
+
+    grasps.attr("THUMB_TO_INDEX") =
+        to_numpy_copy(poses::grasps::THUMB_TO_INDEX, MAX_JOINT_COUNT);
+
+    grasps.attr("THUMB_TO_MIDDLE") =
+        to_numpy_copy(poses::grasps::THUMB_TO_MIDDLE, MAX_JOINT_COUNT);
+
+    // ===== GESTURES =====
+    gestures.attr("START") =
+        to_numpy_copy(poses::gestures::START, MAX_JOINT_COUNT);
+
+    gestures.attr("PEACE") =
+        to_numpy_copy(poses::gestures::PEACE, MAX_JOINT_COUNT);
+
+    gestures.attr("GOAT") =
+        to_numpy_copy(poses::gestures::GOAT, MAX_JOINT_COUNT);
+
+    gestures.attr("FIXERS") =
+        to_numpy_copy(poses::gestures::FIXERS, MAX_JOINT_COUNT);
+
+    gestures.attr("MIDDLE_FINGER") =
+        to_numpy_copy(poses::gestures::MIDDLE_FINGER, MAX_JOINT_COUNT);
+
+    gestures.attr("GOAT") =
+        to_numpy_copy(poses::gestures::OKEY, MAX_JOINT_COUNT);
+
+    gestures.attr("FIST") =
+        to_numpy_copy(poses::gestures::FIST, MAX_JOINT_COUNT);
+
+    gestures.attr("INDEX") =
+        to_numpy_copy(poses::gestures::INDEX, MAX_JOINT_COUNT);
+
+    gestures.attr("HOOK") =
+        to_numpy_copy(poses::gestures::HOOK, MAX_JOINT_COUNT);
+
+    // ===== NUMBERS =====
+    numbers.attr("ZERO") =
+        to_numpy_copy(poses::numbers::ZERO, MAX_JOINT_COUNT);
+
+    numbers.attr("ONE") =
+        to_numpy_copy(poses::numbers::ONE, MAX_JOINT_COUNT);
+
+    numbers.attr("TWO") =
+        to_numpy_copy(poses::numbers::TWO, MAX_JOINT_COUNT);
+
+    numbers.attr("THREE") =
+        to_numpy_copy(poses::numbers::THREE, MAX_JOINT_COUNT);
+
+    numbers.attr("FOUR") =
+        to_numpy_copy(poses::numbers::FOUR, MAX_JOINT_COUNT);
+
+    numbers.attr("FIVE") =
+        to_numpy_copy(poses::numbers::FIVE, MAX_JOINT_COUNT);
 }
