@@ -11,10 +11,16 @@ namespace poses
                                             10, 20, 45, 50};
 
         constexpr float OPEN_BIG[MAX_JOINT_COUNT] = {0, -90, 20, 10,
-                                            -20, 0, 30, 20,
-                                            -10, 0, 30, 20,
-                                            0, 0, 30, 20,
-                                            10, 20, 20, 25};
+                                                -20, 0, 30, 20,
+                                                -10, 0, 30, 20,
+                                                0, 0, 30, 20,
+                                                10, 20, 20, 25};
+
+        constexpr float OPEN_VERY_BIG[MAX_JOINT_COUNT] = {0, -90, -25, 40,
+                                                    -20, 0, 30, 20,
+                                                    -10, 0, 30, 20,
+                                                    0, 0, 30, 20,
+                                                    10, 20, 0, 0};
 
         constexpr float FIVE_FINGER_TO_POINT[MAX_JOINT_COUNT] = {5, -95, 45, 30,
                                                             -15, 50, 50, 50,
@@ -39,6 +45,12 @@ namespace poses
                                                         -12, 25, 85, 40,
                                                         0, 0, 60, 40,
                                                         10, 20, 45, 50};
+        
+        constexpr float FOUR_FINGER_TO_RECT[MAX_JOINT_COUNT] = {0, -90, -5, 50,
+                                                            -10, 20, 50, 50,
+                                                            0, 20, 50, 50,
+                                                            0, 20, 50, 50,
+                                                            10, 20, 0, 0};
     }
 
     namespace gestures
@@ -92,10 +104,34 @@ namespace poses
                                                 0, 0, 90, 90};
 
         constexpr float HOOK[MAX_JOINT_COUNT] = {0, 0, 40, 55,
-                                                0, 25, 55, 60,
+                                                0, 25, 55, 40,
                                                 0, 25, 55, 40,
                                                 0, 25, 55, 40,
                                                 0, 0, 30, 60};
+
+        constexpr float HOOK_INDEX_1[MAX_JOINT_COUNT] = {0, 0, 40, 55,
+                                                0, 0, 45, 85,
+                                                0, 90, 80, 25,
+                                                0, 90, 80, 0,
+                                                0, 0, 90, 90};
+
+        constexpr float HOOK_INDEX_2[MAX_JOINT_COUNT] = {0, 0, 40, 55,
+                                                0, 45, 45, 85,
+                                                0, 90, 80, 25,
+                                                0, 90, 80, 0,
+                                                0, 0, 90, 90};
+
+        constexpr float OPEN_HOLDER_1[MAX_JOINT_COUNT] = {0, -90, 10, 40,
+                                                0, 15, 55, 30,
+                                                0, 0, 0, 0,
+                                                5, 0, 0, 0,
+                                                0, 15, 0, 0};
+
+        constexpr float OPEN_HOLDER_2[MAX_JOINT_COUNT] = {5, -90, 10, 40,
+                                                0, 55, 90, 45,
+                                                0, 0, 0, 0,
+                                                5, 0, 0, 0,
+                                                0, 15, 0, 0};
     }
 
     namespace numbers

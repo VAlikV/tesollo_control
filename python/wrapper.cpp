@@ -110,6 +110,9 @@ PYBIND11_MODULE(dg5f_python, m)
     grasps.attr("OPEN_BIG") =
         to_numpy_copy(poses::grasps::OPEN_BIG, MAX_JOINT_COUNT);
 
+    grasps.attr("OPEN_VERY_BIG") =
+        to_numpy_copy(poses::grasps::OPEN_VERY_BIG, MAX_JOINT_COUNT);
+
     grasps.attr("FIVE_FINGER_TO_POINT") =
         to_numpy_copy(poses::grasps::FIVE_FINGER_TO_POINT, MAX_JOINT_COUNT);
 
@@ -121,6 +124,9 @@ PYBIND11_MODULE(dg5f_python, m)
 
     grasps.attr("THUMB_TO_MIDDLE") =
         to_numpy_copy(poses::grasps::THUMB_TO_MIDDLE, MAX_JOINT_COUNT);
+
+    grasps.attr("FOUR_FINGER_TO_RECT") =
+        to_numpy_copy(poses::grasps::FOUR_FINGER_TO_RECT, MAX_JOINT_COUNT);
 
     // ===== GESTURES =====
     gestures.attr("START") =
@@ -149,6 +155,18 @@ PYBIND11_MODULE(dg5f_python, m)
 
     gestures.attr("HOOK") =
         to_numpy_copy(poses::gestures::HOOK, MAX_JOINT_COUNT);
+
+    gestures.attr("HOOK_INDEX_1") =
+        to_numpy_copy(poses::gestures::HOOK_INDEX_1, MAX_JOINT_COUNT);
+
+    gestures.attr("HOOK_INDEX_2") =
+        to_numpy_copy(poses::gestures::HOOK_INDEX_2, MAX_JOINT_COUNT);
+
+    gestures.attr("OPEN_HOLDER_1") =
+        to_numpy_copy(poses::gestures::OPEN_HOLDER_1, MAX_JOINT_COUNT);
+
+    gestures.attr("OPEN_HOLDER_2") =
+        to_numpy_copy(poses::gestures::OPEN_HOLDER_2, MAX_JOINT_COUNT);
 
     // ===== NUMBERS =====
     numbers.attr("ZERO") =

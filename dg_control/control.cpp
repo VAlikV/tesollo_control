@@ -207,6 +207,7 @@ void DGControl::_loop()
 
             _updatePos();
 
+            _tempPos[16] = 0.0;         // Зануление для безопасности дефектного 16 джоинта
             MoveServoJoint(_tempPos); 
         }
         
