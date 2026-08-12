@@ -6,6 +6,8 @@ set(PYTHON_PACKAGE dg5f_python)
 
 project(${PROJECT} VERSION 1.0.0 LANGUAGES CXX)
 
+option(DG_CONTROL_BUILD_EXECUTABLE "Build the DG_CONTROL command-line executable" ON)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -40,9 +42,19 @@ target_link_libraries(${CORE}
     Eigen3::Eigen
 )
 
-add_executable(${PROJECT}
-    main.cpp   
-)
+if(DG_CONTROL_BUILD_EXECUTABLE)
+    add_executable(${PROJECT}
+        main.cpp
+    )
+
+    target_link_libraries(${PROJECT}
+        ${CORE}
+    )
+
+    set_target_properties(${PROJECT} PROPERTIES
+        BUILD_RPATH "$ORIGIN"
+    )
+endif()
 
 pybind11_add_module(${PYTHON_PACKAGE}
     python/wrapper.cpp
@@ -50,20 +62,22 @@ pybind11_add_module(${PYTHON_PACKAGE}
 )
 
 
-target_link_libraries(${PROJECT}
-    ${CORE}
-)
-
 target_link_libraries(${PYTHON_PACKAGE}
     PRIVATE
     ${CORE}
 )
 
-set_target_properties(${PROJECT} PROPERTIES
-    BUILD_RPATH "$ORIGIN"
-)
-
 set_target_properties(${PYTHON_PACKAGE} PROPERTIES
     BUILD_RPATH "$ORIGIN"
+    INSTALL_RPATH "$ORIGIN"
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+# scikit-build-core collects installed CMake artifacts into the wheel.  Keep
+# the vendor SDK next to the extension so $ORIGIN resolves it at import time.
+install(TARGETS ${PYTHON_PACKAGE}
+    LIBRARY DESTINATION .
+)
+install(FILES ${DGSDK_LIB}
+    DESTINATION .
 )
