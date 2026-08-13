@@ -18,7 +18,7 @@ JOINT_COUNT = 20
 JOINT = 6
 AMPLITUDE_DEG = 60.0
 COMMAND_RATE_HZ = 60.0
-delta = 0.5
+DELTAS_DEG = [5.0]
 HOLD_TIME_S = 1.0
 
 ZERO_TIME_S = 2.0
@@ -28,7 +28,7 @@ TEST_DURATION_S = 10.0
 GRIPPER_IP = "169.254.186.72"
 GRIPPER_PORT = 502
 GRIPPER_SLAVE_ID = 1
-OUTPUT = Path("sine_delta_test")
+OUTPUT = Path("delta_test")
 
 
 def latest_position(hand, previous: np.ndarray) -> tuple[bool, np.ndarray]:
@@ -73,8 +73,10 @@ def linear_command(elapsed: float, delta: float) -> float:
 
 def save_results(rows: list[dict[str, float | int]], prefix: Path, joint: int) -> None:
     prefix.parent.mkdir(parents=True, exist_ok=True)
-    csv_path = prefix.with_suffix(".csv")
-    png_path = prefix.with_suffix(".png")
+    # Append the extension: a fractional delta (for example, 0.25) must not be
+    # interpreted by pathlib as an existing file suffix and replaced.
+    csv_path = Path(f"{prefix}.csv")
+    png_path = Path(f"{prefix}.png")
 
     with csv_path.open("w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=rows[0].keys())
@@ -213,14 +215,21 @@ def play_linear(hand, delta, name):
             next_tick = wait_for_next_tick(next_tick + control_period, control_period)
 
         # ================================================================================================
+
+        else:
+            hand.set_target_position(zero)
+            next_tick = wait_for_next_tick(next_tick + control_period, control_period)
+
+        # ================================================================================================
     
     if rows:
         save_results(rows, name, JOINT)
+
         
 def main() -> None:
     if not 0 <= JOINT < JOINT_COUNT:
         raise ValueError("JOINT must be between 0 and 19")
-    if min(AMPLITUDE_DEG, delta, COMMAND_RATE_HZ, TEST_DURATION_S) <= 0:
+    if not DELTAS_DEG or min(AMPLITUDE_DEG, *DELTAS_DEG, COMMAND_RATE_HZ, TEST_DURATION_S) <= 0:
         raise ValueError("Amplitude, command delta, command rate and duration must be positive")
     if min(ZERO_TIME_S, HOLD_TIME_S) < 0:
         raise ValueError("ZERO_TIME_S and HOLD_TIME_S must be non-negative")
@@ -231,13 +240,14 @@ def main() -> None:
     hand.start()
 
     try:
-         play_linear(hand, delta, OUTPUT)
+        for delta in DELTAS_DEG:
+            output = OUTPUT.parent / f"{OUTPUT.name}_delta_{str(delta)}"
+            print(f"Testing delta={delta:g} deg -> {output}.csv/.png")
+            play_linear(hand, delta, output)
     except KeyboardInterrupt:
         print("Test interrupted; saving collected samples.")
     finally:
         hand.stop()
-
-    
 
 
 if __name__ == "__main__":
