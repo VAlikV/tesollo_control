@@ -82,9 +82,6 @@ private:
         0,0,0,0
     };
 
-    float _deltaPos = 0.1;
-    float _jointThreshold = 0.1;
-
     // ----------------- Queues
     ring_buffer<Eigen::Array<double,MAX_JOINT_COUNT,1>> _target_joint_buffer;
 

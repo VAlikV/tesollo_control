@@ -5,11 +5,11 @@ using namespace handcontrol;
 DGControl *DGControl::_instancePtr = nullptr; 
 
 DGControl::DGControl(const char* ip, int port, int slaveID):
-_target_joint_buffer(1024),
-_current_joint_buffer(1024),
-_current_current_buffer(1024),
-_current_velocity_buffer(1024),
-_current_temperature_buffer(1024)
+_target_joint_buffer(16),
+_current_joint_buffer(16),
+_current_current_buffer(16),
+_current_velocity_buffer(16),
+_current_temperature_buffer(16)
 {
     this->_port = port;
     this->_slaveID = slaveID;
@@ -142,8 +142,8 @@ void DGControl::start()
 
 	for(int i=0;i<MAX_JOINT_COUNT;i++)
 	{
-		_P[i] = 2.0f;   // типичные безопасные значения
-		_D[i] = 2.0f;
+		_P[i] = 4.0f;   // типичные безопасные значения
+		_D[i] = 2.5f;
 	}
 
     SetJointGainPAll(_P);
@@ -200,10 +200,15 @@ void DGControl::_loop()
 
         if (_checkTemp())
         {
-            if (_target_joint_buffer.pop(_msgTargetPos))
+            // Position commands are setpoints, not a trajectory queue.  Drain
+            // all pending commands so a temporary producer/consumer mismatch
+            // cannot build latency by replaying stale targets.
+            bool hasTarget = false;
+            while (_target_joint_buffer.pop(_msgTargetPos))
             {
-                eigenArray2Array(_msgTargetPos, _targetPos);
+                hasTarget = true;
             }
+            if (hasTarget) eigenArray2Array(_msgTargetPos, _targetPos);
 
             _updatePos();
 
@@ -213,20 +218,27 @@ void DGControl::_loop()
         
 
         next += std::chrono::microseconds(_g_commPeriod);
+        const auto now = std::chrono::steady_clock::now();
+        if (next < now)
+        {
+            // Do not run catch-up iterations back-to-back after an overrun.
+            next = now;
+        }
         std::this_thread::sleep_until(next);
     }
 }
 
 void DGControl::_updatePos()
 {
-    float prev_pos;
     for (int8_t i = 0; i < MAX_JOINT_COUNT; ++i)
-    {   
-        prev_pos = _tempPos[i];
-        _tempPos[i] = _tempPos[i] + _deltaPos * handcontrol::sign((_targetPos[i]-_tempPos[i]), _jointThreshold); 
-        if(!((_tempPos[i] >= _lowerLimits[i]-_deltaLimits) && (_tempPos[i] <= _upperLimits[i]+_deltaLimits)))
+    {
+        // MoveServoJoint is the real-time SDK command.  Passing the latest
+        // valid setpoint directly avoids adding a software ramp before the
+        // gripper's own closed-loop response.
+        if ((_targetPos[i] >= _lowerLimits[i] - _deltaLimits) &&
+            (_targetPos[i] <= _upperLimits[i] + _deltaLimits))
         {
-            _tempPos[i] = prev_pos;
+            _tempPos[i] = _targetPos[i];
         }
     }
 }
